@@ -12,7 +12,7 @@ def read_log_file(filename):
 if __name__ == '__main__':
     print('Hello Mars')
 
-    log_filename = 'mission_computer_main.log'
+    log_filename = 'course1/issue1/mission_computer_main.log'
     log_content = read_log_file(log_filename)
 
     if log_content:
