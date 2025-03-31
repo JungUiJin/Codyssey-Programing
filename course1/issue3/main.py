@@ -20,6 +20,15 @@ class DummySensor:
         self.env_values['mars_base_internal_oxygen'] = round(random.uniform(4, 7), 2)
     
     def get_env(self):
+        
+        log_entry = ' | '.join(f"{key}: {value}" for key, value in self.env_values.items())
+        
+        try:
+            with open('sensor_log.txt', 'a') as log_file:
+                log_file.write(log_entry + '\n')
+        except IOError as e:
+            print(f"파일 기록 중 오류 발생: {e}")
+        
         return self.env_values
 
 if __name__ == '__main__':
