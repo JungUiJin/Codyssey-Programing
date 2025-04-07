@@ -27,7 +27,7 @@ class DummySensor:
     def get_env(self):
         log_entry = ' | '.join(f"{key}: {value}" for key, value in self.env_values.items())
         try:
-            with open('sensor_log.txt', 'a') as log_file:
+            with open('course1/issue4/sensor_log.txt', 'a') as log_file:
                 log_file.write(log_entry + '\n')
         except IOError as e:
             print(f"파일 기록 중 오류 발생: {e}")
