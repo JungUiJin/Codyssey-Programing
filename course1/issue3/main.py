@@ -30,13 +30,11 @@ class DummySensor:
             print(f"파일 기록 중 오류 발생: {e}")
         
         return self.env_values
-
-if __name__ == '__main__':
     
-    ds = DummySensor()
+ds = DummySensor()
     
-    ds.set_env()
+ds.set_env()
     
-    env_data = ds.get_env()
+env_data = ds.get_env()
     
-    print(env_data)
+print(env_data)

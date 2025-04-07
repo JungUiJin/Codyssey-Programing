@@ -1,5 +1,5 @@
-import random
 import time
+import random 
 
 class DummySensor:
     def __init__(self):
@@ -25,7 +25,7 @@ class DummySensor:
         log_entry = ' | '.join(f"{key}: {value}" for key, value in self.env_values.items())
         
         try:
-            with open('course1/issue4/sensor_log.txt', 'a') as log_file:
+            with open('course1/issue/sensor_log.txt', 'a') as log_file:
                 log_file.write(log_entry + '\n')
         except IOError as e:
             print(f"파일 기록 중 오류 발생: {e}")
@@ -50,9 +50,11 @@ class MissionComputer:
         while True:
             self.ds.set_env()
             self.env_values = self.ds.get_env()
+            items = self.env_values.items()
             print('{')
-            for key, value in self.env_values.items():
-                print(f"  '{key}': {value},")
+            for i, (key, value) in enumerate(items):
+                comma = ',' if i < len(items) - 1 else ''
+                print(f"  '{key}': {value}{comma}")
             print('}')
 
             self.history.append(self.env_values.copy())
@@ -65,10 +67,13 @@ class MissionComputer:
                     avg = round(total / 60, 3)
                     avg_values[key] = avg
 
+                items = list(avg_values.items())
+                
                 print('\n--- 5분 평균 환경 값 ---')
                 print('{')
-                for key, value in avg_values.items():
-                    print(f"  '{key}': {value},")
+                for i, (key, value) in enumerate(items):
+                    comma = ',' if i < len(items) - 1 else ''
+                    print(f"  '{key}': {value}{comma}")
                 print('}\n')
 
             try:
