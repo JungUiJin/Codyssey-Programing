@@ -1,0 +1,9 @@
+mars_base_internal_temperature: 19 | mars_base_external_temperature: 16 | mars_base_internal_humidity: 56 | mars_base_external_illuminance: 681 | mars_base_internal_co2: 0.041 | mars_base_internal_oxygen: 5.48
+mars_base_internal_temperature: 18 | mars_base_external_temperature: 6 | mars_base_internal_humidity: 52 | mars_base_external_illuminance: 578 | mars_base_internal_co2: 0.056 | mars_base_internal_oxygen: 4.36
+mars_base_internal_temperature: 20 | mars_base_external_temperature: 2 | mars_base_internal_humidity: 57 | mars_base_external_illuminance: 700 | mars_base_internal_co2: 0.065 | mars_base_internal_oxygen: 4.83
+mars_base_internal_temperature: 22 | mars_base_external_temperature: 19 | mars_base_internal_humidity: 59 | mars_base_external_illuminance: 522 | mars_base_internal_co2: 0.027 | mars_base_internal_oxygen: 5.23
+mars_base_internal_temperature: 26 | mars_base_external_temperature: 17 | mars_base_internal_humidity: 55 | mars_base_external_illuminance: 680 | mars_base_internal_co2: 0.097 | mars_base_internal_oxygen: 5.36
+mars_base_internal_temperature: 19 | mars_base_external_temperature: 12 | mars_base_internal_humidity: 60 | mars_base_external_illuminance: 633 | mars_base_internal_co2: 0.035 | mars_base_internal_oxygen: 5.47
+mars_base_internal_temperature: 27 | mars_base_external_temperature: 14 | mars_base_internal_humidity: 53 | mars_base_external_illuminance: 564 | mars_base_internal_co2: 0.028 | mars_base_internal_oxygen: 6.66
+mars_base_internal_temperature: 21 | mars_base_external_temperature: 2 | mars_base_internal_humidity: 60 | mars_base_external_illuminance: 596 | mars_base_internal_co2: 0.068 | mars_base_internal_oxygen: 6.14
+mars_base_internal_temperature: 27 | mars_base_external_temperature: 6 | mars_base_internal_humidity: 60 | mars_base_external_illuminance: 628 | mars_base_internal_co2: 0.058 | mars_base_internal_oxygen: 5.85
