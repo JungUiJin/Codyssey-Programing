@@ -1,0 +1,10 @@
+[info]
+os
+os_version
+cpu
+cpu_cores
+memory_size_mb
+
+[load]
+cpu_usage_percent
+memory_usage_percent
