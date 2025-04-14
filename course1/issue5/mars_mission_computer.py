@@ -106,18 +106,19 @@ class MissionComputer:
 
     def get_mission_computer_info(self):
         try:
-            total_mem = self.get_total_memory_windows()
-
-            info = {
-                'os': platform.system(),
-                'os_version': platform.version(),
-                'cpu': platform.processor(),
-                'cpu_cores': os.cpu_count(),
-                'memory_size_mb': total_mem
-            }
+            info = {}
 
             if self.settings and self.settings['info']:
-                info = {k: v for k, v in info.items() if k in self.settings['info']}
+                if 'os' in self.settings['info']:
+                    info['os'] = platform.system()
+                if 'os_version' in self.settings['info']:
+                    info['os_version'] = platform.version()
+                if 'cpu' in self.settings['info']:
+                    info['cpu'] = platform.processor()
+                if 'cpu_cores' in self.settings['info']:
+                    info['cpu_cores'] = os.cpu_count()
+                if 'memory_size_mb' in self.settings['info']:
+                    info['memory_size_mb'] = self.get_total_memory_windows()
 
             print('\n--- 미션 컴퓨터 시스템 정보 ---')
             print(json.dumps(info, indent=2))
@@ -127,16 +128,16 @@ class MissionComputer:
 
     def get_mission_computer_load(self):
         try:
-            cpu = self.get_cpu_load_windows()
-            mem = self.get_mem_load_windows()
-
-            load = {
-                'cpu_usage_percent': cpu,
-                'memory_usage_percent': mem
-            }
+            load = {}
 
             if self.settings and self.settings['load']:
-                load = {k: v for k, v in load.items() if k in self.settings['load']}
+                if 'cpu_usage_percent' in self.settings['load']:
+                    load['cpu_usage_percent'] = self.get_cpu_load_windows()
+                if 'memory_usage_percent' in self.settings['load']:
+                    load['memory_usage_percent'] = self.get_mem_load_windows()
+            else:
+                load['cpu_usage_percent'] = self.get_cpu_load_windows()
+                load['memory_usage_percent'] = self.get_mem_load_windows()
 
             print('\n--- 미션 컴퓨터 부하 정보 ---')
             print(json.dumps(load, indent=2))
@@ -188,7 +189,6 @@ class MissionComputer:
         except Exception:
             return -1
 
-# 실행부
 if __name__ == '__main__':
     runComputer = MissionComputer()
     runComputer.get_mission_computer_info()

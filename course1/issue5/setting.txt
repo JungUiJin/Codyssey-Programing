@@ -1,3 +1,4 @@
+# = false
 [info]
 os
 os_version
