@@ -21,6 +21,7 @@ class Calculator(QWidget):
         self.display.setReadOnly(True)
         self.display.setFixedHeight(60)
         self.display.setStyleSheet('font-size: 24px; padding: 10px;')
+        self.display.setText('0')
         main_layout.addWidget(self.display)
 
         # 버튼 배치
@@ -62,25 +63,46 @@ class Calculator(QWidget):
     def on_button_clicked(self):
         sender = self.sender()
         text = sender.text()
+        current = self.display.text()
 
         if text == 'AC':
-            self.display.clear()
+            self.display.setText('0')
+
         elif text == '=':
             self.calculate_result()
+
         elif text == '+/-':
             self.toggle_sign()
+
         elif text == '%':
-            self.apply_percentage()
+            if current and self.is_last_char_number(current):
+                self.display.setText(current + '%')
+
+        elif text in ['+', '-', '×', '÷']:
+            if self.is_last_char_number(current):
+                self.display.setText(current + text)
+
+        elif text == '.':
+            if not current.endswith('.'):
+                self.display.setText(current + '.')
+
         else:
-            self.display.setText(self.display.text() + text)
+            if current == '0':
+                self.display.setText(text) 
+            else:
+                self.display.setText(current + text)
+    
+    def is_last_char_number(self, text):
+        return text[-1].isdigit() or text[-1] == ')'
 
     # 정답 계산
     def calculate_result(self): 
         try:
             expression = self.display.text()
-            expression = expression.replace('×', '*').replace('÷', '/') # 연산기호로 변경경
-            result = str(eval(expression))
-            self.display.setText(result)
+            if self.is_last_char_number(expression):
+                expression = expression.replace('×', '*').replace('÷', '/') # 연산기호로 변경경
+                result = str(eval(expression))
+                self.display.setText(result)
         except Exception:
             self.display.setText('Error')
 
