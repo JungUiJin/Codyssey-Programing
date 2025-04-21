@@ -136,6 +136,7 @@ class MissionComputer:
                 if 'memory_usage_percent' in self.settings['load']:
                     load['memory_usage_percent'] = self.get_mem_load_windows()
             else:
+
                 load['cpu_usage_percent'] = self.get_cpu_load_windows()
                 load['memory_usage_percent'] = self.get_mem_load_windows()
 
