@@ -148,25 +148,36 @@ class Calculator(QWidget):
         return postfix
 
     def evaluate_postfix(self, postfix):
-        #후위 표기식 계산
+        # 후위 표기식 계산
         stack = []
-        
+
         for token in postfix:
             if self.is_number(token):
                 stack.append(float(token))
             else:
-                b = stack.pop()
-                a = stack.pop()
-                if token == '+':
-                    stack.append(self.add(a, b))
-                elif token == '-':
-                    stack.append(self.subtract(a, b))
-                elif token == '*':
-                    stack.append(self.multiply(a, b))
-                elif token == '/':
-                    stack.append(self.devide(a, b))  # 정수 나눗셈
-        if isinstance(stack[0], float) : 
+                try:
+                    b = stack.pop()
+                    a = stack.pop()
+
+                    if token == '+':
+                        stack.append(self.add(a, b))
+                    elif token == '-':
+                        stack.append(self.subtract(a, b))
+                    elif token == '*':
+                        stack.append(self.multiply(a, b))
+                    elif token == '/':
+                        if b == 0:
+                            return "Error: Divide by zero"
+                        stack.append(self.devide(a, b))
+                except IndexError:
+                    return "Error: Invalid expression"
+
+        if not stack:
+            return "Error: No result"
+
+        if isinstance(stack[0], float):
             stack[0] = round(stack[0], 6)
+
         return str(stack[0])
     
     def add(self, a, b): return a + b
