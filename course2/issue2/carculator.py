@@ -2,6 +2,7 @@ import sys
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QGridLayout, QPushButton, QLineEdit
 )
+from PyQt6.QtGui import QFont, QFontMetrics
 from PyQt6.QtCore import Qt
 
 
@@ -20,7 +21,10 @@ class Calculator(QWidget):
         self.display.setAlignment(Qt.AlignmentFlag.AlignRight)
         self.display.setReadOnly(True)
         self.display.setFixedHeight(60)
-        self.display.setStyleSheet('font-size: 24px; padding: 10px;')
+        self.display.setStyleSheet( 'padding: 10px;')
+        font = QFont()               # 기본 시스템 글꼴 사용
+        font.setPointSize(24)        # 글꼴 크기 설정
+        self.display.setFont(font)
         self.display.setText('0')
         main_layout.addWidget(self.display)
 
@@ -70,7 +74,7 @@ class Calculator(QWidget):
 
         elif text == '=':
             if current and self.is_last_char_number(current):
-                self.calculate_result()
+                self.calculate()
 
         elif text == '+/-':
             if current and self.is_last_char_number(current):
@@ -82,7 +86,7 @@ class Calculator(QWidget):
 
         elif text in ['+', '-', '×', '÷']:
             if self.is_last_char_number(current):
-                self.display.setText(current + text)
+                self.display.setText(current + " " + text + " ")
 
         elif text == '.':
             if not current.endswith('.'):
@@ -93,19 +97,89 @@ class Calculator(QWidget):
                 self.display.setText(text) 
             else:
                 self.display.setText(current + text)
+                
+        self.adjust_font_to_fit(self.display.text())
+
     
     def is_last_char_number(self, text):
         return text[-1].isdigit() or text[-1] == ')'
 
-    # 정답 계산
-    def calculate_result(self): 
+    def apply_percentage(self):
+        current = self.display.text()
         try:
-            expression = self.display.text()
-            expression = expression.replace('×', '*').replace('÷', '/') # 연산기호로 변경경
-            result = str(eval(expression))
-            self.display.setText(result)
+            if current:
+                value = str(float(current) / 100)
+                self.display.setText(value)
         except Exception:
             self.display.setText('Error')
+            
+    def precedence(self, op):
+        #연산자의 우선순위를 반환
+        if op in ('+', '-'):
+            return 1
+        if op in ('*', '/'):
+            return 2
+        return 0
+    
+    def is_number(self, token):
+        try:
+            float(token)
+            return True
+        except ValueError:
+            return False
+
+    def infix_to_postfix(self, expression):
+        #중위 표기식을 후위 표기식으로 변환
+        stack = []
+        postfix = []
+        tokens = expression.strip().split()
+        print(tokens)
+        for token in tokens:
+            if self.is_number(token):
+                postfix.append(token)
+            else:  # 연산자
+                while stack and self.precedence(stack[-1]) >= self.precedence(token):
+                    postfix.append(stack.pop())
+                stack.append(token)
+        
+        while stack:
+            postfix.append(stack.pop())
+
+        return postfix
+
+    def evaluate_postfix(self, postfix):
+        #후위 표기식 계산
+        stack = []
+        
+        for token in postfix:
+            if self.is_number(token):
+                stack.append(float(token))
+            else:
+                b = stack.pop()
+                a = stack.pop()
+                if token == '+':
+                    stack.append(self.add(a, b))
+                elif token == '-':
+                    stack.append(self.subtract(a, b))
+                elif token == '*':
+                    stack.append(self.multiply(a, b))
+                elif token == '/':
+                    stack.append(self.devide(a, b))  # 정수 나눗셈
+        if isinstance(stack[0], float) : 
+            stack[0] = round(stack[0], 6)
+        return str(stack[0])
+    
+    def add(self, a, b): return a + b
+    def subtract(self, a ,b): return a - b
+    def multiply(self, a, b): return a * b
+    def devide(self, a, b): return a / b
+    
+    def calculate(self):
+        expression = self.display.text()
+        expression = expression.replace('×', '*').replace('÷', '/') # 연산기호로 변경경
+        #전체 계산 실행
+        postfix = self.infix_to_postfix(expression)
+        self.display.setText(self.evaluate_postfix(postfix)) 
 
     def toggle_sign(self):
         current = self.display.text()
@@ -120,14 +194,20 @@ class Calculator(QWidget):
         except Exception:
             self.display.setText('Error')
 
-    def apply_percentage(self):
-        current = self.display.text()
-        try:
-            if current:
-                value = str(float(current) / 100)
-                self.display.setText(value)
-        except Exception:
-            self.display.setText('Error')
+    def adjust_font_to_fit(self, text):
+        max_width = self.display.width() - 10  # 패딩 감안
+        base_size = 24  # 시작 폰트 크기
+        font = QFont()
+        
+        # 폰트 크기를 줄여가며 텍스트가 display 너비를 넘지 않을 때까지 반복
+        for size in range(base_size, 10, -1):
+            font.setPointSize(size)
+            metrics = QFontMetrics(font)
+            text_width = metrics.horizontalAdvance(text)
+            if text_width <= max_width:
+                break
+
+        self.display.setFont(font)
 
 
 if __name__ == '__main__':
