@@ -25,7 +25,7 @@ def main():
     # 1. 파일 읽기
     try:
         with open("password.txt", "r", encoding="utf-8") as f:
-            encrypted_text = f.read().strip()
+            password = f.read().strip()
     except FileNotFoundError:
         print("password.txt 파일을 찾을 수 없습니다.")
         return
@@ -36,10 +36,17 @@ def main():
 
     # 2. 모든 시프트 결과 출력
     for shift in range(1, 26):
-        decoded = caesar_cipher_decode(encrypted_text, shift)
+        decoded = caesar_cipher_decode(password, shift)
         shift_results[shift] = decoded
         if contains_dictionary_word(decoded, simple_dictionary):
             print(f"[Shift {shift:2}] (사전 단어 감지됨): {decoded}")
+            save = input("해당 Shift를 result.txt에 저장하시겠습니까? (y/n) : ")
+            if save == 'y' :
+                with open("result.txt", "w", encoding="utf-8") as f:
+                    f.write(decoded)
+                print(f"[Shift {shift}] 결과가 result.txt에 저장되었습니다.")
+                return
+            else : continue
         else:
             print(f"[Shift {shift:2}]: {decoded}")
 
