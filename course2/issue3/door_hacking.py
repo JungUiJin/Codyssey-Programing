@@ -32,7 +32,7 @@ def try_passwords(start_index, step, found_flag, queue):
             queue.put(password)
             return
         except:
-            if total_attempts % 10000 == 0:
+            if total_attempts % 1000000 == 0:
                 elapsed = time.time() - start_time
 
 def unlock_zip():
